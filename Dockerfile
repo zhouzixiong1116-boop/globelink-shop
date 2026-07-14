@@ -1,12 +1,11 @@
 FROM node:18-alpine
 
-WORKDIR /app
+WORKDIR /app/backend
 
 # Copy all files
 COPY . .
 
-# Install dependencies in backend directory
-WORKDIR /app/backend
+# Install dependencies
 RUN npm install
 
 # Expose port
