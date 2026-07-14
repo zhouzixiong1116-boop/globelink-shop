@@ -6,6 +6,6 @@
                    "healthcheckPath":  "/"
                },
     "build":  {
-                  "builder":  "NIXPACKS"
+                  "builder":  "DOCKERFILE"
               }
 }
