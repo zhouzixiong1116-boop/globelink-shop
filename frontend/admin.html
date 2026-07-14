@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后台管理 - Globelink商行</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* 登录遮罩 */
+    #login-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #login-box {
+      background: #111638;
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 16px;
+      padding: 40px;
+      width: 360px;
+      text-align: center;
+    }
+    #login-box h2 {
+      color: #00e5ff;
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+    #login-box p {
+      color: #8892b0;
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+    #login-box input {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 16px;
+    }
+    #login-box input:focus { border-color: #00e5ff; }
+    #login-box button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #0091ea, #00e5ff);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    #login-error {
+      color: #ff1744;
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+    .admin-content { display: none; }
+    .admin-content.unlocked { display: block; }
+  </style>
+</head>
+<body>
+  <!-- 登录遮罩 -->
+  <div id="login-overlay">
+    <div id="login-box">
+      <h2>🔐 后台管理</h2>
+      <p>Globelink商行 — 请输入管理密码</p>
+      <input type="password" id="login-password" placeholder="输入密码" onkeydown="if(event.key==='Enter')doLogin()">
+      <button onclick="doLogin()">进入后台</button>
+      <div id="login-error">密码错误，请重试</div>
+    </div>
+  </div>
+
+  <!-- 后台内容 -->
+  <div class="admin-content" id="admin-content">
+    <nav class="navbar admin-nav">
+      <div class="nav-container">
+        <a href="index.html" class="logo">🌐 Globelink商行</a>
+        <a href="index.html" class="nav-link">← 返回前台</a>
+      </div>
+    </nav>
+
+    <div class="admin-container">
+      <aside class="admin-sidebar">
+        <div class="sidebar-title">管理面板</div>
+        <ul class="sidebar-menu">
+          <li class="active" data-tab="products">📦 商品管理</li>
+          <li data-tab="orders">📋 订单管理</li>
+          <li data-tab="settings">⚙️ 站点设置</li>
+        </ul>
+      </aside>
+
+      <main class="admin-main">
+        <div class="tab-content active" id="tab-products">
+          <div class="tab-header">
+            <h2>商品管理</h2>
+            <button class="btn-primary" onclick="openProductForm()">+ 添加商品</button>
+          </div>
+          <div class="table-wrapper">
+            <table class="admin-table">
+              <thead><tr><th>ID</th><th>商品名</th><th>分类</th><th>价格</th><th>状态</th><th>操作</th></tr></thead>
+              <tbody id="products-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-orders">
+          <div class="tab-header">
+            <h2>订单管理</h2>
+            <button class="btn-secondary" onclick="exportOrders()">📥 导出订单</button>
+          </div>
+          <div class="table-wrapper">
+            <table class="admin-table">
+              <thead><tr><th>订单号</th><th>商品</th><th>客户</th><th>联系方式</th><th>支付</th><th>金额</th><th>状态</th><th>操作</th></tr></thead>
+              <tbody id="orders-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-settings">
+          <h2>站点设置</h2>
+          <div class="settings-form">
+            <div class="form-group"><label>店铺名称</label><input type="text" id="setting-shop-name" value="Globelink商行"></div>
+            <div class="form-group"><label>客服微信</label><input type="text" id="setting-wechat" value="globelink_support"></div>
+            <div class="form-group"><label>客服QQ</label><input type="text" id="setting-qq" value="123456789"></div>
+            <div class="form-group"><label>USDT地址</label><input type="text" id="setting-usdt" placeholder="TRC20地址"></div>
+            <div class="form-group"><label>首页Banner标题</label><input type="text" id="setting-banner-title" value="全球网络加速 · 一站式数字服务"></div>
+            <div class="form-group"><label>首页Banner副标题</label><input type="text" id="setting-banner-sub" value="VPN加速 | 美区Apple ID | 国外软件代充 | 远程配置指导"></div>
+            <div class="form-group"><label>底部版权文字</label><input type="text" id="setting-footer-text" value="© 2026 Globelink商行 All Rights Reserved."></div>
+            <button class="btn-primary" onclick="saveSettings()">保存设置</button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal-overlay" id="product-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 id="product-modal-title">添加商品</h2>
+          <button class="modal-close" onclick="closeProductModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <form id="product-form">
+            <input type="hidden" id="prod-edit-id">
+            <div class="form-group"><label>商品名称 *</label><input type="text" id="prod-name" required placeholder="例：手机加速器"></div>
+            <div class="form-group"><label>分类 *</label>
+              <select id="prod-category" required>
+                <option value="vpn">VPN加速</option><option value="apple">美区ID</option>
+                <option value="charge">代充服务</option><option value="extra">增值服务</option>
+              </select>
+            </div>
+            <div class="form-group"><label>价格（元） *</label><input type="number" id="prod-price" required step="0.01" min="0" placeholder="15"></div>
+            <div class="form-group"><label>规格描述</label><input type="text" id="prod-spec" placeholder="例：月付15元/月"></div>
+            <div class="form-group"><label>标签（逗号分隔）</label><input type="text" id="prod-tags" placeholder="例：教程,远程,秒到"></div>
+            <div class="form-group"><label>详情描述</label><textarea id="prod-desc" rows="4" placeholder="商品详细说明"></textarea></div>
+            <div class="form-group"><label>是否上架</label>
+              <select id="prod-status"><option value="active">上架</option><option value="inactive">下架</option></select>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">保存</button>
+              <button type="button" class="btn-cancel" onclick="closeProductModal()">取消</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    // ===== 密码保护 =====
+    (function(){
+      var pwd = 'gl2026secure';
+      var urlParams = new URLSearchParams(window.location.search);
+      var token = urlParams.get('auth');
+
+      if (token === pwd) {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('admin-content').classList.add('unlocked');
+        localStorage.setItem('gl_admin_unlocked', 'true');
+      } else if (localStorage.getItem('gl_admin_unlocked') === 'true') {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('admin-content').classList.add('unlocked');
+      } else {
+        document.getElementById('login-password').focus();
+      }
+
+      window.doLogin = function(){
+        var input = document.getElementById('login-password').value;
+        if (input === pwd) {
+          document.getElementById('login-overlay').style.display = 'none';
+          document.getElementById('admin-content').classList.add('unlocked');
+          localStorage.setItem('gl_admin_unlocked', 'true');
+        } else {
+          document.getElementById('login-error').style.display = 'block';
+          setTimeout(function(){ document.getElementById('login-error').style.display = 'none'; }, 3000);
+        }
+      };
+    })();
+  </script>
+</body>
+</html>
