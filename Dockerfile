@@ -2,13 +2,15 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy backend files
-COPY backend/package.json backend/
-RUN npm install
-
-# Copy all other files
+# Copy all files
 COPY . .
 
+# Install dependencies in backend directory
+WORKDIR /app/backend
+RUN npm install
+
+# Expose port
 EXPOSE 3000
 
-CMD ["sh", "-c", "cd backend && node server.js"]
+# Start the server
+CMD ["node", "server.js"]
