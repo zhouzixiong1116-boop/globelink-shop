@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Globelink商行 - 全球网络加速 · 一站式数字服务</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo" id="shop-logo">🌐 Globelink商行</a>
+      <div class="nav-links">
+        <a href="#zone-vpn">🌐 VPN加速</a>
+        <a href="#zone-account">🔑 账号专区</a>
+        <a href="#zone-member">👑 会员专区</a>
+        <a href="#zone-sms">📱 接码专区</a>
+        <a href="admin.html" class="nav-admin">管理后台</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 首屏 Banner -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 id="banner-title">全球网络加速 · 一站式数字服务</h1>
+      <p id="banner-sub">VPN加速 | 账号服务 | 会员充值 | 虚拟号码接码</p>
+      <div class="hero-tags">
+        <span class="tag">📖 均附教程</span>
+        <span class="tag">🛠 远程协助 ¥8/次</span>
+        <span class="tag">💳 微信/支付宝/USDT</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== VPN 加速专区 ========== -->
+  <section class="zone-section" id="zone-vpn">
+    <div class="zone-header">
+      <span class="zone-icon">🌐</span>
+      <h2 class="zone-title">VPN 加速专区</h2>
+      <p class="zone-desc">稳定高速的网络加速服务，支持多设备同时在线</p>
+    </div>
+    <div class="zone-products" data-category="vpn" id="products-vpn"></div>
+  </section>
+
+  <!-- ========== 账号专区 ========== -->
+  <section class="zone-section zone-alt" id="zone-account">
+    <div class="zone-header">
+      <span class="zone-icon">🔑</span>
+      <h2 class="zone-title">账号专区</h2>
+      <p class="zone-desc">美区 Apple ID、各类海外平台账号即买即用</p>
+    </div>
+    <div class="zone-products" data-category="apple" id="products-account"></div>
+  </section>
+
+  <!-- ========== 会员专区 ========== -->
+  <section class="zone-section" id="zone-member">
+    <div class="zone-header">
+      <span class="zone-icon">👑</span>
+      <h2 class="zone-title">会员专区</h2>
+      <p class="zone-desc">各类软件会员充值、订阅代续，正版授权更安心</p>
+    </div>
+    <div class="zone-products" data-category="charge" id="products-member"></div>
+  </section>
+
+  <!-- ========== 接码专区 ========== -->
+  <section class="zone-section zone-alt" id="zone-sms">
+    <div class="zone-header">
+      <span class="zone-icon">📱</span>
+      <h2 class="zone-title">接码专区</h2>
+      <p class="zone-desc">海外虚拟号码接收验证码，支持各大平台注册</p>
+    </div>
+    <div class="zone-products" data-category="extra" id="products-sms"></div>
+  </section>
+
+  <!-- 底部 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-col">
+        <h3 id="footer-shop-name">🌐 Globelink商行</h3>
+        <p>全球网络加速 · 一站式数字服务</p>
+      </div>
+      <div class="footer-col">
+        <h3>支付方式</h3>
+        <p>微信支付 · 支付宝 · USDT</p>
+      </div>
+      <div class="footer-col">
+        <h3>客服联系</h3>
+        <p id="footer-wechat">微信: globelink_support</p>
+        <p id="footer-qq">QQ: 123456789</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p id="footer-copyright">© 2026 Globelink商行 All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ========== 下单弹窗（填写信息） ========== -->
+  <div class="modal-overlay" id="order-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>📦 提交订单</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="order-product-info" id="order-product-info"></div>
+        <form id="order-form">
+          <div class="form-group">
+            <label>姓名 / 昵称 *</label>
+            <input type="text" id="order-name" required placeholder="您的称呼">
+          </div>
+          <div class="form-group">
+            <label>联系方式（微信/QQ） *</label>
+            <input type="text" id="order-contact" required placeholder="用于交付商品">
+          </div>
+          <div class="form-group">
+            <label>支付方式 *</label>
+            <select id="order-payment" required>
+              <option value="">请选择</option>
+              <option value="wechat">微信支付</option>
+              <option value="alipay">支付宝</option>
+              <option value="usdt">USDT</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>备注</label>
+            <textarea id="order-note" rows="3" placeholder="特殊要求或问题"></textarea>
+          </div>
+          <button type="submit" class="btn-submit">确认提交订单</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 支付弹窗（展示收款码） ========== -->
+  <div class="modal-overlay" id="payment-modal">
+    <div class="modal modal-payment">
+      <div class="modal-header">
+        <h2>💰 完成支付</h2>
+        <button class="modal-close" onclick="closePaymentModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="payment-summary" id="payment-summary"></div>
+        <div class="payment-qr-area">
+          <p class="payment-hint" id="payment-hint">请扫描下方二维码完成支付</p>
+          <div class="qr-container" id="qr-container">
+            <img id="payment-qr-img" src="" alt="收款码" style="max-width:240px;border-radius:12px;display:none;">
+            <div class="qr-placeholder" id="qr-placeholder">
+              <p>⏳ 正在加载收款码...</p>
+            </div>
+          </div>
+          <div class="payment-redirect">
+            <p>支付完成后，将自动跳转至您的微信客服页面</p>
+            <a id="wechat-redirect-link" href="#" target="_blank" class="btn-redirect">
+              💬 立即联系客服
+            </a>
+          </div>
+        </div>
+        <button class="btn-pay-done" onclick="markPaid()">✅ 我已支付，通知发货</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 订单列表弹窗 -->
+  <div class="modal-overlay" id="orders-modal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h2>📋 我的订单</h2>
+        <button class="modal-close" onclick="closeOrdersModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="orders-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
