@@ -3,7 +3,15 @@ const path = require('path');
 const cors = require('cors');
 
 const app = express();
+
+// Railway 使用 PORT 环境变量，通常是 8080
 const PORT = process.env.PORT || 3000;
+
+console.log('========================================');
+console.log('  Globelink商行 服务器启动中...');
+console.log('  PORT 环境变量: ' + process.env.PORT);
+console.log('  使用端口: ' + PORT);
+console.log('========================================');
 
 // ============================================
 //  中间件
