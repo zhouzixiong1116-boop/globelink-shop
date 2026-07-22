@@ -1,8 +1,13 @@
-FROM node:20-alpine
+FROM node:20-slim
 
 WORKDIR /app
 
-# Install dependencies
+# Install system dependencies for better-sqlite3
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Node.js dependencies
 COPY package*.json ./
 RUN npm install --production
 
