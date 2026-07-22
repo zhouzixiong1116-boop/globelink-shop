@@ -1,19 +1,19 @@
-﻿FROM node:20-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
-# 安装依赖
+# Install dependencies
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install --production
 
-# 复制所有文件
+# Copy all files
 COPY . .
 
-# 创建数据目录
+# Create data directories
 RUN mkdir -p /app/data /app/uploads
 
-# 暴露端口
+# Expose port
 EXPOSE 3000
 
-# 启动
+# Start server
 CMD ["node", "server.js"]
