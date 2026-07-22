@@ -1,27 +1,125 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Globelink商行</title>
-  <link rel="stylesheet" href="style-simple.css">
+  <title>Globelink商行 - 全球网络加速 · 账号代充</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1 id="shop-name">Globelink商行</h1>
-      <p id="shop-desc">全球网络加速服务</p>
-    </header>
-    
-    <div id="products-list"></div>
-    
-    <footer>
-      <p>支付方式: 微信 | 支付宝 | USDT</p>
-      <p id="contact-info">客服: 微信 globelink_support</p>
-      <a href="admin.html">管理后台</a>
-    </footer>
+  <!-- 顶部导航 -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo" id="shop-logo">🌐 Globelink商行</a>
+      <div class="nav-links">
+        <a href="#vpn">VPN加速</a>
+        <a href="#apple">美区ID</a>
+        <a href="#charge">代充服务</a>
+        <a href="#extra">增值服务</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 首屏 Banner -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 id="banner-title">全球网络加速 · 一站式数字服务</h1>
+      <p id="banner-sub">VPN加速 | 美区Apple ID | 国外软件代充 | 远程配置指导</p>
+      <div class="hero-tags">
+        <span class="tag">📖 均附教程</span>
+        <span class="tag">🛠 远程协助 ¥8/次</span>
+        <span class="tag">💳 微信/支付宝/USDT</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 分类筛选 -->
+  <div class="filter-bar">
+    <button class="filter-btn active" data-cat="all">全部商品</button>
+    <button class="filter-btn" data-cat="vpn">VPN加速</button>
+    <button class="filter-btn" data-cat="apple">美区ID</button>
+    <button class="filter-btn" data-cat="charge">代充服务</button>
+    <button class="filter-btn" data-cat="extra">增值服务</button>
   </div>
-  
-  <script src="script-simple.js"></script>
+
+  <!-- 商品列表 -->
+  <section class="products-section" id="products-grid">
+    <!-- JS动态渲染 -->
+  </section>
+
+  <!-- 底部 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-col">
+        <h3 id="footer-shop-name">🌐 Globelink商行</h3>
+        <p>全球网络加速 · 一站式数字服务</p>
+      </div>
+      <div class="footer-col">
+        <h3>支付方式</h3>
+        <p>微信支付 · 支付宝 · USDT</p>
+      </div>
+      <div class="footer-col">
+        <h3>客服联系</h3>
+        <p id="footer-wechat">微信: globelink_support</p>
+        <p id="footer-qq">QQ: 123456789</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p id="footer-copyright">© 2026 Globelink商行 All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- 下单弹窗 -->
+  <div class="modal-overlay" id="order-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>📦 提交订单</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="order-product-info" id="order-product-info"></div>
+        <form id="order-form">
+          <div class="form-group">
+            <label>姓名 / 昵称 *</label>
+            <input type="text" id="order-name" required placeholder="您的称呼">
+          </div>
+          <div class="form-group">
+            <label>联系方式（微信/QQ） *</label>
+            <input type="text" id="order-contact" required placeholder="用于交付商品">
+          </div>
+          <div class="form-group">
+            <label>支付方式 *</label>
+            <select id="order-payment" required>
+              <option value="">请选择</option>
+              <option value="wechat">微信支付</option>
+              <option value="alipay">支付宝</option>
+              <option value="usdt">USDT</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>备注</label>
+            <textarea id="order-note" rows="3" placeholder="特殊要求或问题"></textarea>
+          </div>
+          <button type="submit" class="btn-submit">确认提交订单</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 订单列表弹窗 -->
+  <div class="modal-overlay" id="orders-modal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h2>📋 我的订单</h2>
+        <button class="modal-close" onclick="closeOrdersModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="orders-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
+
