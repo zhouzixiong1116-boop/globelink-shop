@@ -54,15 +54,15 @@ a { color: var(--primary); text-decoration: none; }
   color: var(--primary);
   text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
 }
-.nav-links { display: flex; gap: 20px; align-items: center; }
+.nav-links { display: flex; gap: 24px; }
 .nav-links a {
   color: var(--text-muted);
   font-size: 14px;
   transition: color 0.2s;
 }
 .nav-links a:hover { color: var(--primary); }
-.nav-admin {
-  color: var(--accent) !important;
+.nav-admin, .nav-link {
+  color: var(--accent);
   font-size: 13px;
   font-weight: 600;
   padding: 6px 14px;
@@ -70,7 +70,7 @@ a { color: var(--primary); text-decoration: none; }
   border-radius: 6px;
   transition: all 0.2s;
 }
-.nav-admin:hover {
+.nav-admin:hover, .nav-link:hover {
   background: rgba(255, 64, 129, 0.15);
 }
 
@@ -104,50 +104,39 @@ a { color: var(--primary); text-decoration: none; }
   color: var(--primary);
 }
 
-/* ===== 分区区块 ===== */
-.zone-section {
+/* ===== 筛选栏 ===== */
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 20px 24px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: rgba(0, 229, 255, 0.15);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* ===== 商品网格 ===== */
+.products-section {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 48px 24px;
-}
-.zone-alt {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 20px;
-  margin: 0 12px;
-  max-width: calc(1200px - 24px);
-}
-.zone-header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-.zone-icon {
-  font-size: 36px;
-  display: block;
-  margin-bottom: 8px;
-}
-.zone-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 8px;
-}
-.zone-desc {
-  font-size: 14px;
-  color: var(--text-muted);
-}
-.zone-product-grid {
+  padding: 0 24px 60px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
-.zone-empty {
-  text-align: center;
-  color: var(--text-muted);
-  padding: 40px 0;
-  font-size: 14px;
-}
-
-/* ===== 商品卡片 ===== */
 .product-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -172,6 +161,7 @@ a { color: var(--primary); text-decoration: none; }
   box-shadow: 0 8px 32px rgba(0, 229, 255, 0.1);
 }
 .product-card:hover::before { opacity: 1; }
+.product-card.offline { opacity: 0.5; }
 .product-cat {
   font-size: 11px;
   text-transform: uppercase;
@@ -237,45 +227,43 @@ a { color: var(--primary); text-decoration: none; }
   background: rgba(0, 0, 0, 0.3);
   border-top: 1px solid var(--border);
   padding: 40px 24px 20px;
-  margin-top: 40px;
 }
 .footer-content {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 32px;
+  gap: 30px;
 }
 .footer-col h3 {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--primary);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 .footer-col p {
   font-size: 13px;
   color: var(--text-muted);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 .footer-bottom {
   text-align: center;
-  padding-top: 24px;
-  margin-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.05);
   font-size: 12px;
   color: var(--text-muted);
 }
 
 /* ===== Modal ===== */
 .modal-overlay {
+  display: none;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  display: none;
+  z-index: 200;
   justify-content: center;
   align-items: center;
-  padding: 24px;
+  padding: 20px;
 }
 .modal-overlay.show { display: flex; }
 .modal {
@@ -287,8 +275,7 @@ a { color: var(--primary); text-decoration: none; }
   max-height: 90vh;
   overflow-y: auto;
 }
-.modal-lg { max-width: 640px; }
-.modal-payment { max-width: 520px; }
+.modal-lg { max-width: 700px; }
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -296,10 +283,7 @@ a { color: var(--primary); text-decoration: none; }
   padding: 20px 24px;
   border-bottom: 1px solid var(--border);
 }
-.modal-header h2 {
-  font-size: 18px;
-  color: var(--primary);
-}
+.modal-header h2 { font-size: 18px; color: var(--primary); }
 .modal-close {
   background: none;
   border: none;
@@ -368,94 +352,6 @@ a { color: var(--primary); text-decoration: none; }
   font-weight: 800;
   color: var(--primary);
   margin-top: 8px;
-}
-
-/* ===== 支付弹窗样式 ===== */
-.payment-summary {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 20px;
-}
-.summary-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 0;
-  font-size: 14px;
-}
-.summary-row span { color: var(--text-muted); }
-.summary-row strong { color: #fff; }
-.summary-price {
-  color: var(--primary) !important;
-  font-size: 18px !important;
-}
-
-.payment-qr-area {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.payment-hint {
-  font-size: 14px;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-.qr-container {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  display: inline-block;
-  margin-bottom: 16px;
-}
-.qr-container img {
-  max-width: 240px;
-  width: 100%;
-  height: auto;
-  display: block;
-}
-.qr-placeholder {
-  color: #333;
-  font-size: 14px;
-  padding: 20px;
-}
-.payment-redirect {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-}
-.payment-redirect p {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-}
-.btn-redirect {
-  display: inline-block;
-  padding: 10px 24px;
-  background: linear-gradient(135deg, #07c160, #06ad56);
-  color: #fff;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.2s;
-}
-.btn-redirect:hover {
-  box-shadow: 0 4px 16px rgba(7, 193, 96, 0.4);
-  transform: translateY(-1px);
-}
-.btn-pay-done {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, var(--success), #00c853);
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-pay-done:hover {
-  box-shadow: 0 4px 16px rgba(0, 230, 118, 0.4);
 }
 
 /* ===== Admin Panel ===== */
@@ -602,63 +498,14 @@ a { color: var(--primary); text-decoration: none; }
   width: 100%;
 }
 
-/* ===== QR Code Management in Admin ===== */
-.qr-management {
-  max-width: 700px;
-}
-.qr-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
-}
-.qr-item {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
-  text-align: center;
-}
-.qr-item h4 {
-  font-size: 14px;
-  color: var(--primary);
-  margin-bottom: 10px;
-}
-.qr-item img {
-  max-width: 160px;
-  max-height: 160px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  margin-bottom: 10px;
-}
-.qr-item .qr-actions {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-.qr-upload-area {
-  border: 2px dashed var(--border);
-  border-radius: 10px;
-  padding: 24px;
-  text-align: center;
-  margin-bottom: 24px;
-}
-.qr-upload-area p {
-  color: var(--text-muted);
-  font-size: 13px;
-  margin-bottom: 12px;
-}
-
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .hero h1 { font-size: 24px; }
   .hero { padding: 40px 16px 30px; }
-  .zone-section { padding: 32px 16px; }
-  .zone-alt { margin: 0 8px; }
-  .zone-product-grid { grid-template-columns: 1fr; }
+  .products-section { grid-template-columns: 1fr; padding: 0 16px 40px; }
   .admin-sidebar { width: 60px; }
   .sidebar-title, .sidebar-menu li span { display: none; }
   .sidebar-menu li { text-align: center; padding: 12px 0; }
-  .modal { max-width: 100%; margin: 0; border-radius: 12px 12px 0 0; max-height: 95vh; align-self: flex-end; }
 }
+
