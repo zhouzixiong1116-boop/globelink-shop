@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const path = require('path');
 const cors = require('cors');
 
@@ -9,30 +9,26 @@ const PORT = process.env.PORT || 3000;
 //  中间件
 // ============================================
 app.use(cors());
-app.use(express.json({ limit: '10mb' })); // 支持 base64 图片上传
+app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // ============================================
-//  静态文件服务
-// ============================================
-// 上传的收款码图片
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-// 前台 + 后台 HTML/CSS/JS
-app.use(express.static(path.join(__dirname)));
-
-// ============================================
-//  SSE 实时推送
-// ============================================
-const sse = require('./sse');
-app.get('/api/events', sse.handleConnection);
-
-// ============================================
-//  API 路由
+//  API 路由（必须在静态文件之前）
 // ============================================
 app.use('/api', require('./routes/products'));
 app.use('/api', require('./routes/orders'));
 app.use('/api', require('./routes/settings'));
 app.use('/api', require('./routes/payment'));
+
+// SSE 实时推送
+const sse = require('./sse');
+app.get('/api/events', sse.handleConnection);
+
+// ============================================
+//  静态文件服务
+// ============================================
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname)));
 
 // ============================================
 //  健康检查
