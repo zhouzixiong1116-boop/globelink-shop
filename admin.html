@@ -94,13 +94,11 @@
         <ul class="sidebar-menu">
           <li class="active" data-tab="products">📦 商品管理</li>
           <li data-tab="orders">📋 订单管理</li>
-          <li data-tab="payments">💰 收款码管理</li>
           <li data-tab="settings">⚙️ 站点设置</li>
         </ul>
       </aside>
 
       <main class="admin-main">
-        <!-- 商品管理 -->
         <div class="tab-content active" id="tab-products">
           <div class="tab-header">
             <h2>商品管理</h2>
@@ -114,7 +112,6 @@
           </div>
         </div>
 
-        <!-- 订单管理 -->
         <div class="tab-content" id="tab-orders">
           <div class="tab-header">
             <h2>订单管理</h2>
@@ -128,18 +125,6 @@
           </div>
         </div>
 
-        <!-- 收款码管理 -->
-        <div class="tab-content" id="tab-payments">
-          <div class="tab-header">
-            <h2>💰 收款码管理</h2>
-            <button class="btn-primary" onclick="openQrUpload()">+ 上传收款码</button>
-          </div>
-          <div class="qr-management">
-            <div class="qr-list" id="qr-list"></div>
-          </div>
-        </div>
-
-        <!-- 站点设置 -->
         <div class="tab-content" id="tab-settings">
           <h2>站点设置</h2>
           <div class="settings-form">
@@ -148,7 +133,7 @@
             <div class="form-group"><label>客服QQ</label><input type="text" id="setting-qq" value="123456789"></div>
             <div class="form-group"><label>USDT地址</label><input type="text" id="setting-usdt" placeholder="TRC20地址"></div>
             <div class="form-group"><label>首页Banner标题</label><input type="text" id="setting-banner-title" value="全球网络加速 · 一站式数字服务"></div>
-            <div class="form-group"><label>首页Banner副标题</label><input type="text" id="setting-banner-sub" value="VPN加速 | 账号服务 | 会员充值 | 虚拟号码接码"></div>
+            <div class="form-group"><label>首页Banner副标题</label><input type="text" id="setting-banner-sub" value="VPN加速 | 美区Apple ID | 国外软件代充 | 远程配置指导"></div>
             <div class="form-group"><label>底部版权文字</label><input type="text" id="setting-footer-text" value="© 2026 Globelink商行 All Rights Reserved."></div>
             <button class="btn-primary" onclick="saveSettings()">保存设置</button>
           </div>
@@ -156,7 +141,6 @@
       </main>
     </div>
 
-    <!-- 商品编辑弹窗 -->
     <div class="modal-overlay" id="product-modal">
       <div class="modal">
         <div class="modal-header">
@@ -169,10 +153,8 @@
             <div class="form-group"><label>商品名称 *</label><input type="text" id="prod-name" required placeholder="例：手机加速器"></div>
             <div class="form-group"><label>分类 *</label>
               <select id="prod-category" required>
-                <option value="vpn">VPN加速</option>
-                <option value="apple">账号服务</option>
-                <option value="charge">会员充值</option>
-                <option value="extra">接码服务</option>
+                <option value="vpn">VPN加速</option><option value="apple">美区ID</option>
+                <option value="charge">代充服务</option><option value="extra">增值服务</option>
               </select>
             </div>
             <div class="form-group"><label>价格（元） *</label><input type="number" id="prod-price" required step="0.01" min="0" placeholder="15"></div>
@@ -185,43 +167,6 @@
             <div class="form-actions">
               <button type="submit" class="btn-primary">保存</button>
               <button type="button" class="btn-cancel" onclick="closeProductModal()">取消</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- 收款码上传弹窗 -->
-    <div class="modal-overlay" id="qr-modal">
-      <div class="modal">
-        <div class="modal-header">
-          <h2 id="qr-modal-title">上传收款码</h2>
-          <button class="modal-close" onclick="closeQrModal()">✕</button>
-        </div>
-        <div class="modal-body">
-          <form id="qr-form">
-            <input type="hidden" id="qr-edit-id">
-            <div class="form-group">
-              <label>收款方式 *</label>
-              <select id="qr-method" required>
-                <option value="wechat">微信支付</option>
-                <option value="alipay">支付宝</option>
-                <option value="usdt">USDT</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>收款码图片 *</label>
-              <input type="file" id="qr-file" accept="image/*" style="display:none;">
-              <button type="button" class="btn-secondary" onclick="document.getElementById('qr-file').click()" style="width:100%;">📷 选择图片</button>
-              <div id="qr-preview" style="margin-top:12px;text-align:center;"></div>
-            </div>
-            <div class="form-group">
-              <label>备注说明</label>
-              <input type="text" id="qr-note" placeholder="例：个人收款码">
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">保存</button>
-              <button type="button" class="btn-cancel" onclick="closeQrModal()">取消</button>
             </div>
           </form>
         </div>
