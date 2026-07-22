@@ -1,58 +1,72 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const fs = require('fs');
 
 const app = express();
-
-// Railway 使用 PORT 环境变量，通常是 8080
 const PORT = process.env.PORT || 3000;
 
-console.log('========================================');
-console.log('  Globelink商行 服务器启动中...');
-console.log('  PORT 环境变量: ' + process.env.PORT);
-console.log('  使用端口: ' + PORT);
-console.log('========================================');
-
-// ============================================
-//  中间件
-// ============================================
 app.use(cors());
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
-
-// ============================================
-//  API 路由（必须在静态文件之前）
-// ============================================
-app.use('/api', require('./routes/products'));
-app.use('/api', require('./routes/orders'));
-app.use('/api', require('./routes/settings'));
-app.use('/api', require('./routes/payment'));
-
-// SSE 实时推送
-const sse = require('./sse');
-app.get('/api/events', sse.handleConnection);
-
-// ============================================
-//  静态文件服务
-// ============================================
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-// ============================================
-//  健康检查
-// ============================================
-app.get('/health', function(req, res) {
-  res.json({ status: 'ok', time: new Date().toISOString() });
+// 简易API - 直接用JSON文件存储
+const DB_FILE = path.join(__dirname, 'data.json');
+
+function loadDB() {
+  if (fs.existsSync(DB_FILE)) {
+    return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+  }
+  return { products: [], orders: [], settings: {}, payment_qr: [] };
+}
+
+function saveDB(db) {
+  const dir = path.join(__dirname, '.');
+  fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+}
+
+// API路由
+app.get('/api/products', (req, res) => {
+  const db = loadDB();
+  res.json(db.products.filter(p => p.status === 'active'));
 });
 
-// ============================================
-//  启动服务器
-// ============================================
-app.listen(PORT, function() {
-  console.log('========================================');
-  console.log('  Globelink商行 服务器已启动');
-  console.log('  端口: ' + PORT);
-  console.log('  前台: http://localhost:' + PORT);
-  console.log('  后台: http://localhost:' + PORT + '/admin.html');
-  console.log('========================================');
+app.get('/api/admin/products', (req, res) => {
+  const db = loadDB();
+  res.json(db.products);
+});
+
+app.post('/api/admin/products', (req, res) => {
+  const db = loadDB();
+  const product = { ...req.body, id: db.products.length + 1, status: 'active' };
+  db.products.push(product);
+  saveDB(db);
+  res.json(product);
+});
+
+app.put('/api/admin/products/:id', (req, res) => {
+  const db = loadDB();
+  const idx = db.products.findIndex(p => p.id == req.params.id);
+  if (idx >= 0) {
+    db.products[idx] = { ...db.products[idx], ...req.body };
+    saveDB(db);
+    res.json(db.products[idx]);
+  } else {
+    res.status(404).json({ error: 'Not found' });
+  }
+});
+
+app.delete('/api/admin/products/:id', (req, res) => {
+  const db = loadDB();
+  db.products = db.products.filter(p => p.id != req.params.id);
+  saveDB(db);
+  res.json({ ok: true });
+});
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+app.listen(PORT, () => {
+  console.log('Server running on port ' + PORT);
 });
