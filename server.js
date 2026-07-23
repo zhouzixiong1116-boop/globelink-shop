@@ -29,7 +29,7 @@ function broadcast(type, payload) {
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "..", "frontend")));
+app.use(express.static(__dirname));
 
 if (!fs.existsSync(DATA_DIR)) { fs.mkdirSync(DATA_DIR, { recursive: true }); }
 
