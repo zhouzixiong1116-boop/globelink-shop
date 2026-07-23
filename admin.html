@@ -104,6 +104,7 @@
     </div>
   </div>
   <script src="script.js"></script>
-</body>
+<script>var ADMIN_PASSWORD="admin123";if(!sessionStorage.getItem("admin_logged_in")){var pwd=prompt("请输入管理密码:");if(pwd!==ADMIN_PASSWORD){alert("密码错误!");window.location.href="index.html";}else{sessionStorage.setItem("admin_logged_in","true");}}</script>
+
 </html>
 
